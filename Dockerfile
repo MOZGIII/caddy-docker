@@ -1,3 +1,3 @@
 FROM scratch
 COPY rootfs /
-CMD [ /bin/caddy ]
+CMD [ "/bin/caddy" ]
