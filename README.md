@@ -1,25 +1,21 @@
 # caddy-docker
 
-This repo provides tooling to build caddy docker image from scratch.
-
-It will generate rootfs that only includes `bin/caddy` (the caddy binary).
-Use it as a base for your own more specific docker image.
-
-You should add your own `Caddyfile` for the server to work.
-Adding a CA certificates bundle to `/etc/ssl/certs/` (from Mozilla i.e.) would also be a good idea, but it's up to you.
+This repo provides caddy docker image built from sources.
 
 ## Usage
 
-First create rootfs:
+A pre-built image is available at Docker Hub: `mozgiii/caddy-docker`.
 
-```shell
-bin/create-rootfs
-```
+You should build your own image using this (typically you'd copy `caddy` binary from this image, not use this image as a base image).
+Add your own `Caddyfile` and, optionally other files (a statically built SPA code for example).
+Adding a CA certificates bundle (to `/etc/ssl/certs/` if you're grabbing one from Mozilla directly, or using your base image's package manager) would also be a good idea, but it's up to you.
+This image is built using `alpine` flavor of `golang` image, so it's best to build the final image based on alpine as well. The binary is built with `CGO_ENABLED=0`, so it should work with other base images as well.
 
-Then you can use rootfs on it's own or build a docker image from it:
+## Building
 
-```shell
-bin/build-docker-image my-image-tag
-```
+Just build an image as usual with `docker build`.
 
-Now you have a docker image with `bin/caddy`.
+Supported build args:
+
+- `CADDY_VERSION` - a tag/branch/commit from the http://github.com/mholt/caddy repo.
+- `GO_IMAGE` - a go image (has to be alpine-based, because we're installing git).
